@@ -40,7 +40,7 @@ with mp_hands.Hands(
 
     print("Câmera iniciada. Posicione a mão na frente da câmera.")
     print("Pressione uma tecla de letra (ex: 'a', 'b', 'c') para salvar o gesto correspondente.")
-    print("Pressione 'q' para sair.")
+    print("Pressione 'esc' para sair.")
 
     while cap.isOpened():
         # Lê um quadro (frame) da câmera
@@ -70,8 +70,8 @@ with mp_hands.Hands(
                 h, w, c = img.shape
                 
                 # Calcula a "distância" (tamanho da mão na tela)
-                x0, y0 = int(handLms.landmark.x * w), int(handLms.landmark.y * h)   # Punho
-                x12, y12 = int(handLms.landmark[1].x * w), int(handLms.landmark[1].y * h) # Ponta do dedo médio
+                x0, y0 = int(handLms.landmark[0].x * w), int(handLms.landmark[0].y * h)   # Punho
+                x12, y12 = int(handLms.landmark[12].x * w), int(handLms.landmark[12].y * h) # Ponta do dedo médio
                 distancia = ((x12 - x0) ** 2 + (y12 - y0) ** 2) ** 0.5
                 cv2.putText(img, f"Dist: {int(distancia)}px", (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
@@ -101,7 +101,7 @@ with mp_hands.Hands(
         key = cv2.waitKey(5) & 0xFF
 
         # Se 'q' for pressionado, encerra o programa
-        if key == ord('q'):
+        if key == 27: # 27 é o código ASCII para a tecla 'Esc'
             break
         
         # Se uma tecla de letra for pressionada, salva os dados do gesto
